@@ -8,21 +8,27 @@ var Queue = function() {
   // Implement the methods below
 
   someInstance.enqueue = function(value) {
-    counter++;
     storage[counter] = value;
+    counter++;
   };
 
   someInstance.dequeue = function() {
 
     if (counter > 0) {
       var result = $.extend({}, storage);
-
-
-      counter --;
+      delete storage[0];
+      delete storage[counter - 1];
+      for (var i = 1; i < counter; i++) {
+        storage[i - 1] = result[i];
+      }
+      counter--;
       return result[0];
     }
   };
 
+  someInstance.value = function() {
+    return storage;
+  };
 
   someInstance.size = function() {
     return counter;

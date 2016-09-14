@@ -141,6 +141,21 @@ define([
         expect(queue.dequeue()).to.equal('b');
       });
 
+      it('correctly adjusts size when dequeuing', function(){
+        queue.enqueue('a');
+        queue.enqueue('b');
+        queue.dequeue();
+        expect(queue.size()).to.equal(1);
+        // expect(queue).to.eql({'0':'b'});
+      });
+
+      it('correctly shifts values when dequeuing', function(){
+        queue.enqueue('a');
+        queue.enqueue('b');
+        queue.dequeue();
+        expect(queue.value()).to.eql({0:'b'});
+      });
+
     });
 
     describe('queue-specific behavior', function() {
