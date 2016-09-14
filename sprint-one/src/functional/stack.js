@@ -12,10 +12,17 @@ var Stack = function() {
     counter ++;
   };
 
+  var extend = function(copy, original) {
+    for (var key in original) {
+      copy[key] = original[key];
+    } 
+    return copy;
+  }
+
   someInstance.pop = function() {
     if (counter > 0) {
       // var result = Object.create(storage);
-      var result = $.extend({}, storage);
+      var result = extend({}, storage);
 
       counter --;
       delete storage[counter];
