@@ -37,10 +37,10 @@ Graph.prototype.removeNode = function(value) {
   }
 
 //remove edges of removed node
-  this.edges.forEach(function(ele, i) {
+  this.edges.forEach(function(ele, i, coll) {
     if (ele.includes(value)) {
-      console.log("found an edge that contains value", ele);
-      this.edges.splice(i, 1);
+      // console.log("found an edge that contains value", ele);
+      coll.splice(i, 1);
     }
   });
 };
@@ -76,6 +76,7 @@ Graph.prototype.removeEdge = function(fromNode, toNode) {
 
 // Pass in a callback which will be executed on each node of the graph.
 Graph.prototype.forEachNode = function(cb) {
+  this.nodes.forEach(cb);
 };
 
 /*
