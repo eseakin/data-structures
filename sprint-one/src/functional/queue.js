@@ -4,26 +4,27 @@ var Queue = function() {
   // Use an object with numeric keys to store values
   var storage = {};
   var counter = 0;
+  var queCount = 0;
 
   // Implement the methods below
 
   someInstance.enqueue = function(value) {
-    storage[counter] = value;
+    if (counter === 0) {
+      queCount = 0;
+    }
+    storage[counter + queCount] = value;
     counter++;
   };
 
   someInstance.dequeue = function() {
-
     if (counter > 0) {
-      var result = $.extend({}, storage);
-      delete storage[0];
-      delete storage[counter - 1];
-      for (var i = 1; i < counter; i++) {
-        storage[i - 1] = result[i];
-      }
+      var result = storage[queCount];
+      delete storage[queCount];
+      queCount++;
       counter--;
-      return result[0];
+      return result;
     }
+
   };
 
   someInstance.value = function() {

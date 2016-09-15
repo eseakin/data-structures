@@ -152,8 +152,10 @@ define([
       it('correctly shifts values when dequeuing', function(){
         queue.enqueue('a');
         queue.enqueue('b');
+        queue.enqueue('c');
         queue.dequeue();
-        expect(queue.value()).to.eql({0:'b'});
+        queue.dequeue();
+        expect(queue.value()).to.eql({2:'c'});
       });
 
     });

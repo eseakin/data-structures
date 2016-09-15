@@ -12,22 +12,14 @@ var Stack = function() {
     counter ++;
   };
 
-  var extend = function(copy, original) {
-    for (var key in original) {
-      copy[key] = original[key];
-    } 
-    return copy;
-  }
 
   someInstance.pop = function() {
+    var a = storage[counter - 1];
     if (counter > 0) {
-      // var result = Object.create(storage);
-      var result = extend({}, storage);
-
       counter --;
       delete storage[counter];
-      return result[counter];
     }
+    return a;
   };
 
   someInstance.size = function() {

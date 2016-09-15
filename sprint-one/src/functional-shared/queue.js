@@ -2,6 +2,7 @@ var Queue = function() {
   var someInstance = {};
   someInstance.storage = {};
   someInstance.counter = 0;
+  someInstance.queCount = 0;
 
   _.extend(someInstance, queueMethods);
 
@@ -13,20 +14,20 @@ var Queue = function() {
 var queueMethods = {};
 
 queueMethods.enqueue = function(value) {
-  this.storage[this.counter] = value;
+  if (this.counter === 0){
+    this.queCount = 0;
+  }
+  this.storage[this.counter + this.queCount] = value;
   this.counter++;
 };
 
 queueMethods.dequeue = function() {
   if (this.counter > 0) {
-    var copy = {};
-    _.extend(copy, this.storage);
-    for (var i = 1; i < this.counter; i++) {
-      this.storage[i - 1] = copy[i];
-    }
-    delete this.storage[this.counter - 1];
+    var copy = this.storage[this.queCount];
+    delete this.storage[this.queCount];
     this.counter--;
-    return copy[0];
+    this.queCount++;
+    return copy;
   }
 };
 
