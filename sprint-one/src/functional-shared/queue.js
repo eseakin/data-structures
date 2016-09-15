@@ -14,7 +14,7 @@ var Queue = function() {
 var queueMethods = {};
 
 queueMethods.enqueue = function(value) {
-  if (this.counter === 0){
+  if (this.counter === 0) {
     this.queCount = 0;
   }
   this.storage[this.counter + this.queCount] = value;
