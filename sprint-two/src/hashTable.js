@@ -3,18 +3,30 @@
 var HashTable = function() {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
+  console.log("new instance")
 };
 
-HashTable.prototype.insert = function(k, v) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
+HashTable.prototype.insert = function(key, val) {
+  var index = getIndexBelowMaxForKey(key, this._limit);
+  console.log(index,key);
+  if (this._storage.get(index) !== val) {
+    
+    index = getIndexBelowMaxForKey(key, this._limit);
+  }
+  this._storage.set(index, val);
+  console.log("storage = ",this._storage[index]);
 };
 
-HashTable.prototype.retrieve = function(k) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
+HashTable.prototype.retrieve = function(key) {
+  var index = getIndexBelowMaxForKey(key, this._limit);
+  return this._storage.get(index);
 };
 
-HashTable.prototype.remove = function(k) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
+HashTable.prototype.remove = function(key) {
+  var index = getIndexBelowMaxForKey(key, this._limit);
+  console.log(index, key)
+  console.log(this._storage)
+  this._storage.set(index, undefined);
 };
 
 
