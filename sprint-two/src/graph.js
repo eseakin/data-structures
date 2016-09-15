@@ -2,7 +2,7 @@
 
 // Instantiate a new graph
 var Graph = function() {
-  console.log("new instance")
+  // console.log("new instance")
   this.nodes = [];
   this.edges = [];
 };
