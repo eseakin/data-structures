@@ -25,9 +25,9 @@ BinarySearchTree.prototype.contains = function(findVal) {
   if (this.value === findVal) {
     return true;
   } else if (this.value > findVal && this.left !== null) {
-    return this.left.contains(findVal)
+    return this.left.contains(findVal);
   } else if (this.value < findVal && this.right !== null) {
-    return this.right.contains(findVal)
+    return this.right.contains(findVal);
   }
   return false; 
   

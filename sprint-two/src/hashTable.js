@@ -9,30 +9,46 @@ var HashTable = function() {
 HashTable.prototype.insert = function(key, val) {
   var index = getIndexBelowMaxForKey(key, this._limit);
   // console.log(index, key);
-  var obj = {}
-  obj[key] = val;
+  var tuple = [key, val];
+  var arr = [];
   
   if (this._storage.get(index) === undefined) {
-    this._storage.set(index, obj);
+    arr.push(tuple);
+    this._storage.set(index, arr);
   } else {
-    obj = this._storage.get(index);
-    obj[key] = val;
-    this._storage.set(index, obj);
+    arr = this._storage.get(index);
+    arr.push(tuple);
+    this._storage.set(index, arr);
   }
   // console.log("storage = ", this._storage[index]);
 };
 
 HashTable.prototype.retrieve = function(key) {
   var index = getIndexBelowMaxForKey(key, this._limit);
-  var result = this._storage.get(index);
-  return result[key];
+  var arr = this._storage.get(index);
+  //running through array and finding which one has an arr[x][0] of key, and returning what is stored at arr[x][1]
+  var result;
+
+  arr.forEach(function(ele) {
+    if (ele[0] === key) {
+      result = ele[1];
+    }
+  });
+
+  return result;
 };
 
 HashTable.prototype.remove = function(key) {
   var index = getIndexBelowMaxForKey(key, this._limit);
   // console.log(index, key);
   // console.log(this._storage);
-  this._storage.set(index, {key: undefined});
+  var arr = this._storage.get(index);
+
+  arr.forEach(function(ele, i) {
+    if (ele[0] === key) {
+      arr.splice(i, 1);
+    }
+  });
 };
 
 
