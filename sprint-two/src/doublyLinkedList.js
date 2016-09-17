@@ -2,8 +2,10 @@ var DoublyLinkedList = function() {
   var list = {};
   list.head = null;
   list.tail = null;
+  list.count = 0;
 
   list.addToHead = function(newVal) {
+    this.count++;
     if (this.head === null) {
       newNode = Node(newVal);
       this.head = newNode;
@@ -11,7 +13,7 @@ var DoublyLinkedList = function() {
     } else {
       var newNode = Node(newVal);
       this.head.prev = newNode;
-      newNode.next = this.head
+      newNode.next = this.head;
       this.head = newNode;
 
     }
@@ -20,10 +22,27 @@ var DoublyLinkedList = function() {
   };
   list.removeTail = function() {
     var result = this.tail.value;
-    this.tail.prev = this.tail;
-    this.tail.next = null;
-
+    if (this.count === 1) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      this.tail = this.tail.prev;
+      this.tail.next = null;      
+    }
+    this.count --;
     return result;
+  };
+
+  list.contains = function(target) {
+    if (this.head.value === target) {
+      return true;
+    }
+    for (var key in this) {
+      if (this[key].value === target) {
+        return true;
+      }
+    }
+    return false;
   };
 
 
