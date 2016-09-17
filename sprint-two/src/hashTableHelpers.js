@@ -24,6 +24,7 @@ var LimitedArray = function(limit) {
     storage[index] = value;
   };
   limitedArray.each = function(callback) {
+    console.log('called _storage each')
     for (var i = 0; i < storage.length; i++) {
       callback(storage[i], i, storage);
     }

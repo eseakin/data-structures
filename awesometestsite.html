@@ -43,16 +43,16 @@ $( document ).ready(function() {
     // arr[i] = Math.floor(Math.random() * i);
     arr[i] = Math.random().toString(36).replace(/[^a-z]+/g, '');
     arr[i] = arr[i].substring(0, 5);
-    // $('#first').append('<div class="number" style="">' + arr[i] + '</div>');
+    $('#first').append('<div class="number" style="">' + arr[i] + '</div>');
     hash.insert(i, arr[i]);
     // console.log(hash.retrieve(i));
   }
-  // var results = hash.display();
-  // results.forEach(function(ele) {
-  //   ele.forEach(function(e){
-  //     $('#first').append('<div id="hashTable" style="">' + e + '</div>');
-  //   });
-  // });
+  var results = hash.display();
+  results.forEach(function(ele) {
+    ele.forEach(function(e){
+      $('#first').append('<div id="hashTable" style="">' + e + '</div>');
+    });
+  });
 
   for (var i = 0; i < 1000; i++) {
     // arr[i] = Math.floor(Math.random() * i);
