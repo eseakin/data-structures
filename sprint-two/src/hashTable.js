@@ -11,82 +11,89 @@ HashTable.prototype.insert = function(key, val) {
   var index = getIndexBelowMaxForKey(key, this._limit);
   // console.log(index, key);
   var tuple = [key, val];
-  var arr = [];
+  var arr = this._storage.get(index) || [];
+
+  for (var i = 0; i < arr.length; i++) {
+    var existingTuple = arr[i];
+    if (existingTuple[0] === val) {
+      existingTuple[1] = val;
+      return;
+    }
+  }
+
+  arr.push(tuple);
+  this._storage.set(index, arr);
   this.tupleCounter++;
-  if (this.tupleCounter / this._limit > .75) {
-    this._limit *= 2;
-    this.reshuffle();
-  }
 
-  if (this._storage.get(index) === undefined) {
-    arr.push(tuple);
-    this._storage.set(index, arr);
-  } else {
-    arr = this._storage.get(index);
-    arr.push(tuple);
-    this._storage.set(index, arr);
+  if (this.tupleCounter > (this._limit * .75)) {
+    this.reshuffle(this._limit * 2);
   }
-
+  return;
   // console.log("storage = ", this._storage[index]);
 };
 
 HashTable.prototype.retrieve = function(key) {
   var index = getIndexBelowMaxForKey(key, this._limit);
-  var arr = this._storage.get(index);
-  //running through array and finding which one has an arr[x][0] of key, and returning what is stored at arr[x][1]
-  var result;
-
-  arr.forEach(function(ele) {
-    if (ele[0] === key) {
-      result = ele[1];
+  var arr = this._storage.get(index) || [];
+  var result = undefined;
+  //running through array and finding which one has an arr[x][0] === key, and returning what is stored at arr[x][1]
+  arr.forEach(function(tuple) {
+    if (tuple[0] === key) {
+      result = tuple[1];
+      return;
     }
-  });
+  }.bind(this));
 
   return result;
 };
 
 HashTable.prototype.remove = function(key) {
   var index = getIndexBelowMaxForKey(key, this._limit);
-  // console.log(index, key);
-  // console.log(this._storage);
-  console.log('remove')
-  var arr = this._storage.get(index);
-  this.tupleCounter--;
-  if (this.tupleCounter / this._limit < .25) {
-    this._limit = this._limit / 2;
-    this.reshuffle(); // THIS IS THE PROBLEM
-  }
+  var arr = this._storage.get(index) || [];
+  var tuple;
 
-  arr.forEach(function(ele, i) {
-    console.log('inside each');
-    if (ele[0] === key) {
+  for (var i = 0; i < arr.length; i++) {
+    tuple = arr[i];
+    if (tuple[0] === key) {
       arr.splice(i, 1);
+      this.tupleCounter--;
+      if (this.tupleCounter < this._limit * .25) {
+        this.reshuffle(Math.floor(this._limit / 2)); // THIS IS THE PROBLEM
+      }
+      return;
     }
-  });
+  }
+  return;
 };
 
-HashTable.prototype.reshuffle = function() {
-  var results = this.display();
+HashTable.prototype.reshuffle = function(newLimit) {
+  var oldStorage = this._storage;
+
+  newLimit = Math.max(newLimit, 8);
+  if (newLimit === this._limit) { return; }
+
+  this._limit = newLimit;
   this.tupleCounter = 0;
   this._storage = LimitedArray(this._limit);
-  for (var i = 0; i < results.length; i++) {
-    console.log('results[i] ', results[i]);
-    this.insert(results[i][0], results[i][1]);
-  }
+
+  oldStorage.each(function(bucket) {
+    if (!bucket) {return;}
+    for (var i = 0; i < bucket.length; i++) {
+      var tuple = bucket[i];
+      this.insert(tuple[0], tuple[1]);  
+    }
+  }.bind(this));
 };
 
 HashTable.prototype.display = function() {
   var results = [];
-  console.log('display')
-  console.log(this._storage)
-  this._storage.each(function(ele, i, col) {
-    for (var j = 0; j < ele.length; j++) {
-      results.push(ele[j]);  
+
+  this._storage.each(function(bucket) {
+    if (!bucket) {return}
+    for (var j = 0; j < bucket.length; j++) {
+      results.push(bucket[j]);  
+      console.log(bucket[j])
     }
-    
-    //[[key,value]]
-    //[[key,value],[key1,value2]]
-    // console.log(ele);
   });
   return results;
 };

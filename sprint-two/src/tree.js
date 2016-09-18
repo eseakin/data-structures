@@ -54,6 +54,19 @@ treeMethods.removeFromParent = function(target, index) {
   //slice it off the array of children
 };
 
+treeMethods.traverse = function(cb) {
+  //run callback on parent
+  cb(this);
+  //check if children
+  if (this.children.length > 0) {
+    //if yes, loop through children
+    for (var i = 0; i < this.children.length; i++) {
+      //run traverse on each child
+      this.children[i].traverse(cb);
+    }
+  }
+};
+
 
 /*
  * Complexity: What is the time complexity of the above functions?

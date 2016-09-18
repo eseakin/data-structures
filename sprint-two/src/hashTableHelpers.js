@@ -23,10 +23,14 @@ var LimitedArray = function(limit) {
     checkLimit(index);
     storage[index] = value;
   };
-  limitedArray.each = function(callback) {
-    console.log('called _storage each')
+  limitedArray.each = function(callback, ele, i, col) {  
+    // console.log('called _storage each')
+    
+    col = storage;
+
     for (var i = 0; i < storage.length; i++) {
-      callback(storage[i], i, storage);
+      ele = storage[i];
+      callback(ele, i, col);
     }
   };
 

@@ -2,6 +2,7 @@ var BinarySearchTree = function(startVal) {
   this.value = startVal;
   this.left = null;
   this.right = null;
+  this.tier = this.tier || 0;
 };
 
 BinarySearchTree.prototype.insert = function(newVal) {
@@ -43,6 +44,10 @@ BinarySearchTree.prototype.depthFirstLog = function(cb) {
   if (this.right !== null) {
     this.right.depthFirstLog(cb);
   } 
+};
+
+BinarySearchTree.prototype.breadthFirstLog = function() {
+
 };
 
 /*
